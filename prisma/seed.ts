@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, TicketStatus } from "@prisma/client";
 import dayjs from "dayjs";
 const prisma = new PrismaClient();
 
@@ -15,8 +15,158 @@ async function main() {
       },
     });
   }
-
   console.log({ event });
+
+  let ticketType = await prisma.ticketType.findFirst();
+  if(!ticketType) {
+    await prisma.ticketType.createMany({
+      data: [
+        {
+          name: "In-person, no hotel",
+          price: 250,
+          includesHotel: false,
+          isRemote: false
+        },
+        {
+          name: "Remote",
+          price: 100,
+          includesHotel: false,
+          isRemote: true
+        },
+        {
+          name: "In-person, with hotel",
+          price: 600,
+          includesHotel: true,
+          isRemote: false
+        }
+      ]
+    })
+  }
+
+  let ticket = await prisma.ticket.findFirst();
+  console.log(ticket);
+  if(!ticket) {
+    await prisma.ticket.create({
+      data: {
+        ticketTypeId: 1,
+        enrollmentId: 1,
+        status: TicketStatus.PAID,
+      }
+    })
+  }
+
+  let Hotel = await prisma.hotel.findFirst();
+  if(!Hotel) {
+    await prisma.hotel.createMany({
+      data: [
+        {
+          name:"Driven Resort",
+          image:"https://i.imgur.com/QDK2muM.png"
+        },
+        {
+          name:"Driven Palace",
+          image:"https://i.imgur.com/P3NKgmU.png"
+        },
+        {
+          name:"Driven World",
+          image:"https://i.imgur.com/9pAixTX.png"
+        }
+      ]
+    })
+  }
+
+  let Room = await prisma.room.findFirst({
+    include:{
+      Booking: true
+    }
+  });
+  console.log(Room)
+  if(!Room) {
+      await prisma.room.createMany({
+        data: [
+          {
+            name: "101",
+            capacity: 3,
+            hotelId: 1
+          },
+          {
+            name: "102",
+            capacity: 2,
+            hotelId: 1
+          },
+          {
+            name: "103",
+            capacity: 3,
+            hotelId: 1
+          },
+          {
+            name: "104",
+            capacity: 1,
+            hotelId: 1
+          },
+          {
+            name: "105",
+            capacity: 1,
+            hotelId: 1
+          },
+          {
+            name: "101",
+            capacity: 3,
+            hotelId: 2
+          },
+          {
+            name: "102",
+            capacity: 3,
+            hotelId: 2
+          },
+          {
+            name: "103",
+            capacity: 1,
+            hotelId: 2
+          },
+          {
+            name: "104",
+            capacity: 1,
+            hotelId: 2
+          },
+          {
+            name: "101",
+            capacity: 1,
+            hotelId: 3
+          },
+          {
+            name: "102",
+            capacity: 1,
+            hotelId: 3
+          },
+          {
+            name: "201",
+            capacity: 2,
+            hotelId: 1
+          },
+          {
+            name: "202",
+            capacity: 3,
+            hotelId: 1
+          }
+        ]
+      })
+  }
+  
+  let Booking = await prisma.booking.findFirst({
+    include: {
+      Room: true
+    }
+  });
+  console.log(Booking);
+  if(!Booking) {
+    await prisma.booking.create({
+      data: {
+        userId: 1,
+        roomId: 1
+      }
+    })
+  }
 }
 
 main()
