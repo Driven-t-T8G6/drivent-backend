@@ -18,6 +18,7 @@ export async function listBooking(req: AuthenticatedRequest, res: Response) {
 
 export async function bookingRoom(req: AuthenticatedRequest, res: Response) {
   try {
+
     const { userId } = req;
 
     const { roomId } = req.body;
