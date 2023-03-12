@@ -57,11 +57,17 @@ async function fetchGithubUser(token: String) {
       });      
 
     const sessionToken = await createSession(user.id);
-    return sessionToken;
+    return {
+      token: sessionToken,
+      user: {
+        id: user.id,
+        email: user.email
+      }
+    };
 
   }
-  catch(e) {
-    console.log(e);
+  catch(error) {
+    console.log(error.details);
   }
 }
 
