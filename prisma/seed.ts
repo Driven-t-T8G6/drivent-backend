@@ -22,19 +22,19 @@ async function main() {
     await prisma.ticketType.createMany({
       data: [
         {
-          name: "In-person, no hotel",
+          name: "Presencial",
           price: 250,
           includesHotel: false,
           isRemote: false
         },
         {
-          name: "Remote",
+          name: "Online",
           price: 100,
           includesHotel: false,
           isRemote: true
         },
         {
-          name: "In-person, with hotel",
+          name: "Presencial",
           price: 600,
           includesHotel: true,
           isRemote: false
@@ -43,17 +43,17 @@ async function main() {
     })
   }
 
-  let ticket = await prisma.ticket.findFirst();
-  console.log(ticket);
-  if(!ticket) {
-    await prisma.ticket.create({
-      data: {
-        ticketTypeId: 1,
-        enrollmentId: 1,
-        status: TicketStatus.PAID,
-      }
-    })
-  }
+  // let ticket = await prisma.ticket.findFirst();
+  // console.log(ticket);
+  // if(!ticket) {
+  //   await prisma.ticket.create({
+  //     data: {
+  //       ticketTypeId: 1,
+  //       enrollmentId: 1,
+  //       status: TicketStatus.PAID,
+  //     }
+  //   })
+  // }
 
   let Hotel = await prisma.hotel.findFirst();
   if(!Hotel) {
@@ -152,21 +152,21 @@ async function main() {
         ]
       })
   }
-  
-  let Booking = await prisma.booking.findFirst({
-    include: {
-      Room: true
-    }
-  });
-  console.log(Booking);
-  if(!Booking) {
-    await prisma.booking.create({
-      data: {
-        userId: 1,
-        roomId: 1
-      }
-    })
-  }
+
+  // let Booking = await prisma.booking.findFirst({
+  //   include: {
+  //     Room: true
+  //   }
+  // });
+  // console.log(Booking);
+  // if(!Booking) {
+  //   await prisma.booking.create({
+  //     data: {
+  //       userId: 1,
+  //       roomId: 1
+  //     }
+  //   })
+  // }
 }
 
 main()
