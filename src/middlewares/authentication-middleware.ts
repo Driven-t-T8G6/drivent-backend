@@ -10,14 +10,12 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
   if (!authHeader) return generateUnauthorizedResponse(res);
 
   const token = authHeader.split(' ')[1];
-  console.log(`token é esse ${token}`);
   if (!token) {
     return generateUnauthorizedResponse(res);
   }
 
   try {
     const { userId } = jwt.verify(token, process.env.JWT_SECRET) as JWTPayload;
-    console.log(token);
     const session = await prisma.session.findFirst({
       where: {
         token,
