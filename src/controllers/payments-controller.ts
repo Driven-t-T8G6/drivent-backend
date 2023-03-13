@@ -25,25 +25,41 @@ export async function getPaymentByTicketId(req: AuthenticatedRequest, res: Respo
   }
 }
 
-export async function paymentProcess(req: AuthenticatedRequest, res: Response) {
+export async function paymentConfirmation(req: AuthenticatedRequest, res: Response) {
   try {
     const { userId } = req;
-    const { ticketId, cardData } = req.body;
+    const { ticketId } = req.body;
 
-    if (!ticketId || !cardData) {
+    if (!ticketId) {
       return res.sendStatus(httpStatus.BAD_REQUEST);
     }
-    const payment = await paymentService.paymentProcess(ticketId, userId, cardData);
-
-    if (!payment) {
-      return res.sendStatus(httpStatus.NOT_FOUND);
-    }
-
-    return res.status(httpStatus.OK).send(payment);
+    const payment = await paymentService.paymentConfirmation(ticketId, userId);
+    res.send(payment);
   } catch (error) {
     if (error.name === 'UnauthorizedError') {
       return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
+    console.log(error);
+    return res.sendStatus(httpStatus.NOT_FOUND);
+  }
+}
+
+export async function paymentProcess(req: AuthenticatedRequest, res: Response) {
+  try {
+    const { userId } = req;
+    const { ticketId } = req.body;
+
+    if (!ticketId) {
+      return res.sendStatus(httpStatus.BAD_REQUEST);
+    }
+    const session = await paymentService.paymentProcess(ticketId, userId);
+    res.send(session.url);
+
+  } catch (error) {
+    if (error.name === 'UnauthorizedError') {
+      return res.sendStatus(httpStatus.UNAUTHORIZED);
+    }
+    console.log(error);
     return res.sendStatus(httpStatus.NOT_FOUND);
   }
 }
