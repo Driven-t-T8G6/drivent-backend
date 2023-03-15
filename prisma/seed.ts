@@ -167,6 +167,36 @@ async function main() {
   //     }
   //   })
   // }
+
+let activies = await prisma.activity.createMany({
+  data: [
+    {
+      id: 1,
+      title: 'Primeira Atividade',
+      capacity: 50,
+      location: 'Sala de Workshop',
+      startsAt: new Date(Date.parse('2023-03-22 10:30:00')),
+      endsAt: new Date(Date.parse('2023-03-23 12:30:00'))
+    },
+    {
+      id: 2,
+      title: 'Segunda Atividade',
+      capacity: 30,
+      location: 'Auditório Principal',
+      startsAt: new Date(Date.parse('2023-03-21 10:00:00')),
+      endsAt: new Date(Date.parse('2023-03-22 13:00:00'))
+    },
+    {
+      id: 3,
+      title: 'Terceira Atividade',
+      capacity: 30,
+      location: 'Auditório Lateral',
+      startsAt: new Date(Date.parse('2023-03-21 11:00:00')),
+      endsAt: new Date(Date.parse('2023-03-22 13:00:00'))
+    }
+  ]
+})
+
 }
 
 main()
