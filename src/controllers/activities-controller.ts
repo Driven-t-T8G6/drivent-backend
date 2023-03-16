@@ -25,7 +25,24 @@ export async function postActivity(req: AuthenticatedRequest, res: Response, nex
         return res.sendStatus(201)
     } catch (error) {
         if (error.name === 'UnauthorizedError') return res.sendStatus(httpStatus.UNAUTHORIZED);
-        if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND)
+        if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
+        if (error.name === 'BadRequestError') return res.sendStatus(httpStatus.BAD_REQUEST);
+        return res.sendStatus(500)
+    }
+}
+
+export async function deleteActivity(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    try {
+        const { userId } = req
+        const activityId = Number(req.params.activityId)
+
+        await activityService.deleteActivity(userId, activityId)
+        return res.sendStatus(200)
+    } catch (error) {
+        console.log(error)
+        if (error.name === 'UnauthorizedError') return res.sendStatus(httpStatus.UNAUTHORIZED);
+        if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
+        if (error.name === 'BadRequestError') return res.sendStatus(httpStatus.BAD_REQUEST);
         return res.sendStatus(500)
     }
 }

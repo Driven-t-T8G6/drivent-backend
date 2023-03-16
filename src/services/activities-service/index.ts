@@ -32,8 +32,9 @@ async function postActivity(userId: number, activityId: number) {
     if (verifyTicketType.TicketType.isRemote || verifyTicketType.status !== "PAID") throw unauthorizedError()
 
     const activity = await activityRepository.getActivityById(activityId)
-    if (activity.atCapacity) throw unauthorizedError()
     if (!activity) throw notFoundError()
+    if (activity.atCapacity) throw unauthorizedError()
+
 
     let activityEnd = new Date(activity.endsAt)
     let now = new Date(Date.now())
@@ -48,9 +49,26 @@ async function postActivity(userId: number, activityId: number) {
     return
 }
 
+async function deleteActivity(userId: number, activityId: number) {
+    if (isNaN(activityId) || !Number.isInteger(activityId)) throw BadRequestError()
+    
+    const isUserSubscribed = await subscriptionsRepository.findSubscriptionByUserId(userId, activityId)
+
+    if (!isUserSubscribed) throw notFoundError()
+    
+    const findActivity = await activityRepository.getActivityById(activityId)
+    
+    await activityRepository.removeOneUserFromActivity(activityId, findActivity.subscriptions - 1)
+    
+    await subscriptionsRepository.removeUserActivity(userId, activityId)
+
+    return
+}
+
 const activityService = {
     getActivities,
-    postActivity
+    postActivity,
+    deleteActivity
 }
 
 export default activityService

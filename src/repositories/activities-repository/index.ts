@@ -4,17 +4,17 @@ async function getActivities() {
     return await prisma.activity.findMany()
 }
 
-async function getActivityById(id: number){
+async function getActivityById(id: number) {
     return await prisma.activity.findFirst({
-        where:{
+        where: {
             id
         }
     })
 }
 
-async function postUserToActivity(id: number, newValueToCapacity: number){
+async function postUserToActivity(id: number, newValueToCapacity: number) {
     return await prisma.activity.update({
-        where:{
+        where: {
             id
         },
         data: {
@@ -23,9 +23,9 @@ async function postUserToActivity(id: number, newValueToCapacity: number){
     })
 }
 
-async function activityFull(id: number){
+async function activityFull(id: number) {
     return await prisma.activity.update({
-        where:{
+        where: {
             id
         },
         data: {
@@ -34,11 +34,23 @@ async function activityFull(id: number){
     })
 }
 
+async function removeOneUserFromActivity(id: number, newValueToSubscriptions: number) {
+    return await prisma.activity.update({
+        where: {
+            id
+        },
+        data: {
+            subscriptions: newValueToSubscriptions
+        }
+    })
+}
+
 const activityRepository = {
     getActivities,
     getActivityById,
     postUserToActivity,
-    activityFull
+    activityFull,
+    removeOneUserFromActivity
 }
 
 export default activityRepository
