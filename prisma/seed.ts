@@ -171,7 +171,6 @@ async function main() {
 let activies = await prisma.activity.createMany({
   data: [
     {
-      id: 1,
       title: 'Primeira Atividade',
       capacity: 50,
       location: 'Sala de Workshop',
@@ -179,7 +178,6 @@ let activies = await prisma.activity.createMany({
       endsAt: new Date(Date.parse('2023-03-23 12:30:00'))
     },
     {
-      id: 2,
       title: 'Segunda Atividade',
       capacity: 30,
       location: 'Auditório Principal',
@@ -187,7 +185,6 @@ let activies = await prisma.activity.createMany({
       endsAt: new Date(Date.parse('2023-03-22 13:00:00'))
     },
     {
-      id: 3,
       title: 'Terceira Atividade',
       capacity: 30,
       location: 'Auditório Lateral',
