@@ -3,13 +3,14 @@ import dayjs from 'dayjs';
 const prisma = new PrismaClient();
 
 async function main() {
+
   await prisma.event.create({
     data: {
       title: 'Driven.t',
       logoImageUrl: 'https://files.driveneducation.com.br/images/logo-rounded.png',
       backgroundImageUrl: 'linear-gradient(to right, #FA4098, #FFD77F)',
       startsAt: dayjs().toDate(),
-      endsAt: dayjs().add(3, 'days').toDate(),
+      endsAt: dayjs().add(4, 'days').toDate(),
     },
   });
 
@@ -129,25 +130,49 @@ async function main() {
         id: 1,
         title: 'Primeira Atividade',
         capacity: 50,
-        location: 'Sala de Workshop',
-        startsAt: new Date(Date.parse('2023-03-22 10:30:00')),
-        endsAt: new Date(Date.parse('2023-03-23 12:30:00')),
+        location: 'Auditório Principal',
+        startsAt: new Date(dayjs().toDate().setHours(9, 0, 0, 0)),
+        endsAt: new Date(dayjs().toDate().setHours(10, 0, 0, 0)),
       },
       {
         id: 2,
         title: 'Segunda Atividade',
-        capacity: 30,
-        location: 'Auditório Principal',
-        startsAt: new Date(Date.parse('2023-03-21 10:00:00')),
-        endsAt: new Date(Date.parse('2023-03-22 13:00:00')),
+        capacity: 35,
+        location: 'Auditório Lateral',
+        startsAt: new Date(dayjs().toDate().setHours(9, 0, 0, 0)),
+        endsAt: new Date(dayjs().toDate().setHours(12, 0, 0, 0)),
       },
       {
         id: 3,
         title: 'Terceira Atividade',
+        capacity: 15,
+        location: 'Sala de Workshop',
+        startsAt: new Date(dayjs().toDate().setHours(9, 0, 0, 0)),
+        endsAt: new Date(dayjs().toDate().setHours(11, 0, 0, 0)),
+      },
+      {
+        id: 4,
+        title: 'Quarta Atividade',
         capacity: 30,
-        location: 'Auditório Lateral',
-        startsAt: new Date(Date.parse('2023-03-21 11:00:00')),
-        endsAt: new Date(Date.parse('2023-03-22 13:00:00')),
+        location: 'Auditório Principal',
+        startsAt: new Date(dayjs().toDate().setHours(10, 0, 0, 0)),
+        endsAt: new Date(dayjs().toDate().setHours(11, 0, 0, 0)),
+      },
+      {
+        id: 5,
+        title: 'Quinta Atividade',
+        capacity: 15,
+        location: 'Sala de Workshop',
+        startsAt: new Date(dayjs().toDate().setHours(11, 0, 0, 0)),
+        endsAt: new Date(dayjs().toDate().setHours(12, 0, 0, 0)),
+      },
+      {
+        id: 6,
+        title: 'Sexta Atividade',
+        capacity: 30,
+        location: 'Auditório Principal',
+        startsAt: new Date(dayjs().toDate().setHours(11, 0, 0, 0)),
+        endsAt: new Date(dayjs().toDate().setHours(12, 0, 0, 0)),
       },
     ],
   });
