@@ -153,7 +153,7 @@ async function main() {
       {
         id: 4,
         title: 'Quarta Atividade',
-        capacity: 30,
+        capacity: 50,
         location: 'Auditório Principal',
         startsAt: new Date(dayjs().toDate().setHours(10, 0, 0, 0)),
         endsAt: new Date(dayjs().toDate().setHours(11, 0, 0, 0)),
@@ -161,7 +161,7 @@ async function main() {
       {
         id: 5,
         title: 'Quinta Atividade',
-        capacity: 15,
+        capacity: 1,
         location: 'Sala de Workshop',
         startsAt: new Date(dayjs().toDate().setHours(11, 0, 0, 0)),
         endsAt: new Date(dayjs().toDate().setHours(12, 0, 0, 0)),
@@ -169,7 +169,7 @@ async function main() {
       {
         id: 6,
         title: 'Sexta Atividade',
-        capacity: 30,
+        capacity: 50,
         location: 'Auditório Principal',
         startsAt: new Date(dayjs().toDate().setHours(11, 0, 0, 0)),
         endsAt: new Date(dayjs().toDate().setHours(12, 0, 0, 0)),

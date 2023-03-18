@@ -16,7 +16,7 @@ async function getActivities(userId: number) {
     if (verifyTicketType.TicketType.isRemote || verifyTicketType.status !== "PAID") throw unauthorizedError()
 
 
-    return await activityRepository.getActivities()
+    return await activityRepository.getActivities(userId)
 }
 
 async function postActivity(userId: number, activityId: number) {
@@ -51,15 +51,15 @@ async function postActivity(userId: number, activityId: number) {
 
 async function deleteActivity(userId: number, activityId: number) {
     if (isNaN(activityId) || !Number.isInteger(activityId)) throw BadRequestError()
-    
+
     const isUserSubscribed = await subscriptionsRepository.findSubscriptionByUserId(userId, activityId)
 
     if (!isUserSubscribed) throw notFoundError()
-    
+
     const findActivity = await activityRepository.getActivityById(activityId)
-    
+
     await activityRepository.removeOneUserFromActivity(activityId, findActivity.subscriptions - 1)
-    
+
     await subscriptionsRepository.removeUserActivity(userId, activityId)
 
     return
