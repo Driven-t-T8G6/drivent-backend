@@ -28,6 +28,7 @@ export async function postActivity(req: AuthenticatedRequest, res: Response, nex
     if (error.name === 'UnauthorizedError') return res.sendStatus(httpStatus.UNAUTHORIZED);
     if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
     if (error.name === 'BadRequestError') return res.sendStatus(httpStatus.BAD_REQUEST);
+    if (error.name === 'ConflictError') return res.sendStatus(httpStatus.CONFLICT);
     return res.sendStatus(500);
   }
 }
@@ -44,6 +45,7 @@ export async function deleteActivity(req: AuthenticatedRequest, res: Response, n
     if (error.name === 'UnauthorizedError') return res.sendStatus(httpStatus.UNAUTHORIZED);
     if (error.name === 'NotFoundError') return res.sendStatus(httpStatus.NOT_FOUND);
     if (error.name === 'BadRequestError') return res.sendStatus(httpStatus.BAD_REQUEST);
+
     return res.sendStatus(500);
   }
 }

@@ -1,4 +1,4 @@
-import { BadRequestError, notFoundError, unauthorizedError } from '@/errors';
+import { BadRequestError, notFoundError, unauthorizedError, conflictError } from '@/errors';
 import activityRepository from '@/repositories/activities-repository';
 import enrollmentRepository from '@/repositories/enrollment-repository';
 import subscriptionsRepository from '@/repositories/subscriptions-repository';
@@ -38,11 +38,25 @@ async function postActivity(userId: number, activityId: number) {
 
   if (now < activityEnd) throw unauthorizedError();
 
+  let activityStart = new Date(activity.startsAt);
+  const allActivitiesSubscribedsFromUser = await subscriptionsRepository.getAllSubscriptionsFromUser(userId);
+  console.log(allActivitiesSubscribedsFromUser);
+  allActivitiesSubscribedsFromUser.map((activitySubscribed, index) => {
+    if (
+      activitySubscribed.Activiy.location !== activity.location &&
+      activityStart < activitySubscribed.Activiy.endsAt &&
+      activityEnd > activitySubscribed.Activiy.startsAt
+    ) {
+      throw conflictError('Conflito de horário');
+    }
+  });
+
   await activityRepository.postUserToActivity(activity.id, activity.subscriptions + 1);
 
   await subscriptionsRepository.createSubscription(userId, activityId);
 
   if (activity.subscriptions + 1 === activity.capacity) await activityRepository.activityFull(activityId);
+
   return;
 }
 
