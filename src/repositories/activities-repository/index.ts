@@ -10,7 +10,7 @@ async function getActivities(userId: number) {
       },
     },
     orderBy: {
-        id: 'asc',
+      id: 'asc',
     },
   });
 }
