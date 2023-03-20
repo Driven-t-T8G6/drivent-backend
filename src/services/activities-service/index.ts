@@ -36,7 +36,7 @@ async function postActivity(userId: number, activityId: number) {
   let activityEnd = new Date(activity.endsAt);
   let now = new Date(Date.now());
 
-  if (now > activityEnd) throw unauthorizedError();
+  if (now < activityEnd) throw unauthorizedError();
 
   await activityRepository.postUserToActivity(activity.id, activity.subscriptions + 1);
 
@@ -50,14 +50,6 @@ async function deleteActivity(userId: number, activityId: number) {
   if (isNaN(activityId) || !Number.isInteger(activityId)) throw BadRequestError();
 
   const isUserSubscribed = await subscriptionsRepository.findSubscriptionByUserId(userId, activityId);
-
-  if (!isUserSubscribed) throw notFoundError();
-
-  const findActivity = await activityRepository.getActivityById(activityId);
-
-  await activityRepository.removeOneUserFromActivity(activityId, findActivity.subscriptions - 1);
-
-  await subscriptionsRepository.removeUserActivity(userId, activityId);
 
   if (!isUserSubscribed) throw notFoundError();
 
